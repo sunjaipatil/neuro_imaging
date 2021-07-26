@@ -6,7 +6,7 @@
 #
 # WARNING! All changes made in this file will be lost!
 
-
+# Imports
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
@@ -51,6 +51,8 @@ class Ui_Dialog(object):
         _translate = QtCore.QCoreApplication.translate
         Dialog.setWindowTitle(_translate("Dialog", "Dialog"))
         self.browse.setText(_translate("Dialog", "Browse"))
+
+# The matplotlib is not a standard PyQt5 widget, so a new MplWidget class has been created under the PyQt5 widget class
 from mplwidget import MplWidget
 
 

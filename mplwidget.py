@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 """
+A new matplotlib widget is created
+
 Created on Wed Jul 21 14:52:36 2021
 
 @author: sanjay.patil
