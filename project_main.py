@@ -58,7 +58,10 @@ class MainWindow(QDialog):
         Plotting function
 
         """
+        # If data is not loaded slider shouldn't work.
 
+        if self.data == None:
+            return
 
         slider_value = self.ui.top_slider.value()
         plot_data = self.data[slider_value]
@@ -67,6 +70,12 @@ class MainWindow(QDialog):
 
 
     def side_plot(self):
+        """
+        Plotting function for side view
+        """
+        if self.data == None:
+            return
+
         slider_value = self.ui.side_slider.value()
         plot_data = self.data[:,:,slider_value]
         self.ui.sidewidget.canvas.ax.imshow(plot_data)
@@ -74,6 +83,10 @@ class MainWindow(QDialog):
 
 
     def bottom_plot(self):
+
+        if self.data == None:
+            return
+
         slider_value = self.ui.bottom_slider.value()
         plot_data = self.data[:,slider_value,:]
         self.ui.frontwidget.canvas.ax.imshow(plot_data)
