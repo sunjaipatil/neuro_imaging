@@ -29,9 +29,11 @@ class MainWindow(QDialog):
         self.nifti_file = None
         self.data = None
         self.ui.browse.clicked.connect(self.browse_files)
-        self.ui.top_slider.sliderReleased.connect(self.top_plot)
-        self.ui.side_slider.sliderReleased.connect(self.side_plot)
-        self.ui.bottom_slider.sliderReleased.connect(self.bottom_plot)
+        self.ui.top_slider.valueChanged.connect(self.top_plot)
+        self.ui.side_slider.valueChanged.connect(self.side_plot)
+        self.ui.bottom_slider.valueChanged.connect(self.bottom_plot)
+        self.ui.topwidget.canvas.mpl_connect("button_press_event",self.toppress)
+        #self.ui.topwidget.mpl_connect("button_press_event", self.on_press)
         #self.ui.top_slider.valueChanged.connect(self.topplot_value)
         #self.ui.plotbutton.clicked.connect(self.plotdata)
 
@@ -60,9 +62,9 @@ class MainWindow(QDialog):
         """
         # If data is not loaded slider shouldn't work.
 
-        if self.data == None:
+        if not self.nifti_file:#:== None:
             return
-
+        # plots as well as writes down the value on a label
         slider_value = self.ui.top_slider.value()
         plot_data = self.data[slider_value]
         self.ui.topwidget.canvas.ax.imshow(plot_data)
@@ -73,7 +75,7 @@ class MainWindow(QDialog):
         """
         Plotting function for side view
         """
-        if self.data == None:
+        if not self.nifti_file:
             return
 
         slider_value = self.ui.side_slider.value()
@@ -84,7 +86,7 @@ class MainWindow(QDialog):
 
     def bottom_plot(self):
 
-        if self.data == None:
+        if not self.nifti_file:
             return
 
         slider_value = self.ui.bottom_slider.value()
@@ -93,8 +95,8 @@ class MainWindow(QDialog):
         self.ui.frontwidget.canvas.draw()
 
 
-
-
+    def toppress(self,event):
+        print(event.xdata, event.ydata)
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

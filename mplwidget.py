@@ -30,8 +30,13 @@ class MplWidget(QtWidgets.QWidget):
     def __init__(self, parent=None):
         QtWidgets.QWidget.__init__(self, parent)   # Inherit from QWidget
         self.canvas = MplCanvas()                  # Create canvas object
+
+        #self.canvas.mpl_connect("button_press_event", self.on_press)
         self.vbl = QtWidgets.QVBoxLayout()
         self.navi_toolbar = NavigationToolbar(self.canvas, self)     # Set box for plotting
         self.vbl.addWidget(self.canvas)
         self.vbl.addWidget(self.navi_toolbar)
         self.setLayout(self.vbl)
+
+    #def on_press(self, event):
+    #    return (event.xdata, event.ydata)
