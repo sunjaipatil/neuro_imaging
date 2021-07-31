@@ -29,10 +29,27 @@ class MainWindow(QDialog):
         self.nifti_file = None
         self.data = None
         self.ui.browse.clicked.connect(self.browse_files)
-        self.ui.top_slider.valueChanged.connect(self.top_plot)
-        self.ui.side_slider.valueChanged.connect(self.side_plot)
-        self.ui.bottom_slider.valueChanged.connect(self.bottom_plot)
-        self.ui.topwidget.canvas.mpl_connect("button_press_event",self.toppress)
+
+
+        # slider released for showing the image
+        self.ui.top_slider.sliderReleased.connect(self.top_plot)
+        self.ui.side_slider.sliderReleased.connect(self.side_plot)
+        self.ui.bottom_slider.sliderReleased.connect(self.bottom_plot)
+        self.ui.top_slider.valueChanged.connect(self.top_value)
+        self.ui.side_slider.valueChanged.connect(self.side_value)
+        self.ui.bottom_slider.valueChanged.connect(self.bottom_value)
+        # value changed to connect it to value displayed
+
+
+
+
+
+        self.ui.topwidget.canvas.mpl_connect("button_press_event",self.top_press)
+
+
+
+
+
         #self.ui.topwidget.mpl_connect("button_press_event", self.on_press)
         #self.ui.top_slider.valueChanged.connect(self.topplot_value)
         #self.ui.plotbutton.clicked.connect(self.plotdata)
@@ -71,32 +88,64 @@ class MainWindow(QDialog):
         self.ui.topwidget.canvas.draw()
 
 
-    def side_plot(self):
+    def side_plot(self, index_val = None):
         """
         Plotting function for side view
         """
         if not self.nifti_file:
             return
+        if not index_val:
+            slider_value = self.ui.side_slider.value()
+            plot_data = self.data[:,:,slider_value]
+            self.ui.sidewidget.canvas.ax.imshow(plot_data)
+            self.ui.sidewidget.canvas.draw()
+            return
+        else:
+            self.ui.side_slider.setValue(index_val)
+            slider_value = self.ui.side_slider.value()
 
-        slider_value = self.ui.side_slider.value()
-        plot_data = self.data[:,:,slider_value]
-        self.ui.sidewidget.canvas.ax.imshow(plot_data)
-        self.ui.sidewidget.canvas.draw()
-
-
-    def bottom_plot(self):
+            plot_data = self.data[:,:,slider_value]
+            self.ui.sidewidget.canvas.ax.imshow(plot_data)
+            self.ui.sidewidget.canvas.draw()
+            self.side_value()
+            return
+    def bottom_plot(self, index_val = None):
 
         if not self.nifti_file:
             return
 
-        slider_value = self.ui.bottom_slider.value()
-        plot_data = self.data[:,slider_value,:]
-        self.ui.frontwidget.canvas.ax.imshow(plot_data)
-        self.ui.frontwidget.canvas.draw()
+        if not index_val:
+            slider_value = self.ui.bottom_slider.value()
+            plot_data = self.data[:,slider_value,:]
+            self.ui.frontwidget.canvas.ax.imshow(plot_data)
+            self.ui.frontwidget.canvas.draw()
+        else:
+            self.ui.bottom_slider.setValue(index_val)
+            slider_value = self.ui.bottom_slider.value()
+
+            plot_data = self.data[:,slider_value,:]
+            self.ui.frontwidget.canvas.ax.imshow(plot_data)
+            self.ui.frontwidget.canvas.draw()
+            self.side_value()
+            return
 
 
-    def toppress(self,event):
-        print(event.xdata, event.ydata)
+    def top_value(self):
+        self.ui.top_value.setText(str(self.ui.top_slider.value()))
+
+    def side_value(self):
+        self.ui.side_value.setText(str(self.ui.side_slider.value()))
+
+    def bottom_value(self):
+        self.ui.bottom_value.setText(str(self.ui.bottom_slider.value()))
+
+    def top_press(self, event):
+        x_index = int(event.xdata)
+        y_index = int(event.ydata)
+
+        self.side_plot(index_val = y_index)
+        self.bottom_plot(index_val = x_index)
+        
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

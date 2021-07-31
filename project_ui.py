@@ -30,20 +30,46 @@ class Ui_Dialog(object):
         self.browse.setGeometry(QtCore.QRect(420, 5, 111, 31))
         self.browse.setObjectName("browse")
         self.top_slider = QtWidgets.QSlider(Dialog)
-        self.top_slider.setGeometry(QtCore.QRect(230, 40, 160, 22))
+        self.top_slider.setGeometry(QtCore.QRect(160, 40, 300, 22))
         self.top_slider.setOrientation(QtCore.Qt.Horizontal)
         self.top_slider.setObjectName("top_slider")
+
         self.side_slider = QtWidgets.QSlider(Dialog)
-        self.side_slider.setGeometry(QtCore.QRect(730, 40, 160, 22))
+        self.side_slider.setGeometry(QtCore.QRect(630, 40, 300, 22))
         self.side_slider.setOrientation(QtCore.Qt.Horizontal)
         self.side_slider.setObjectName("side_slider")
         self.bottom_slider = QtWidgets.QSlider(Dialog)
-        self.bottom_slider.setGeometry(QtCore.QRect(250, 650, 160, 22))
+        self.bottom_slider.setGeometry(QtCore.QRect(160, 650, 300, 22))
         self.bottom_slider.setOrientation(QtCore.Qt.Horizontal)
         self.bottom_slider.setObjectName("bottom_slider")
+
         self.top_slider.setValue(0)
         self.side_slider.setValue(0)
         self.bottom_slider.setValue(0)
+
+
+        # slider pagesteps
+        self.top_slider.setPageStep(1)
+        self.side_slider.setPageStep(1)
+        self.bottom_slider.setPageStep(1)
+        # slider ticks
+        self.top_slider.setTickPosition(QtWidgets.QSlider.TicksBelow)
+        self.side_slider.setTickPosition(QtWidgets.QSlider.TicksBelow)
+        self.bottom_slider.setTickPosition(QtWidgets.QSlider.TicksBelow)
+
+
+        # slider values display
+        self.top_value = QtWidgets.QLineEdit(Dialog)
+        self.top_value.setGeometry(QtCore.QRect(520, 40, 40, 40))
+
+
+        self.side_value = QtWidgets.QLineEdit(Dialog)
+        self.side_value.setGeometry(QtCore.QRect(980, 40, 40, 40))
+
+        self.bottom_value = QtWidgets.QLineEdit(Dialog)
+        self.bottom_value.setGeometry(QtCore.QRect(520, 630, 40, 40))
+
+
         self.retranslateUi(Dialog)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
 
