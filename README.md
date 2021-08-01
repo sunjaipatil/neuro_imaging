@@ -1,1 +1,1 @@
-# information about the directory.
+# The scripts in these directory create a GUI for neuro image visualisation
