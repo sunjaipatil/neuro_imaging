@@ -8,11 +8,12 @@ Created on Wed Jul 21 14:52:36 2021
 """
 
 # Imports
-from PyQt5 import QtWidgets
+from PyQt5 import QtWidgets, QtCore
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as Canvas
 import matplotlib
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
+
 # Ensure using PyQt5 backend
 matplotlib.use('QT5Agg')
 
@@ -31,6 +32,9 @@ class MplWidget(QtWidgets.QWidget):
         QtWidgets.QWidget.__init__(self, parent)   # Inherit from QWidget
         self.canvas = MplCanvas()                  # Create canvas object
 
+
+        self.canvas.setFocusPolicy( QtCore.Qt.ClickFocus )
+        self.canvas.setFocus()
         #self.canvas.mpl_connect("button_press_event", self.on_press)
         self.vbl = QtWidgets.QVBoxLayout()
         self.navi_toolbar = NavigationToolbar(self.canvas, self)     # Set box for plotting

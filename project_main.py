@@ -14,8 +14,8 @@ from PyQt5.QtGui import QPixmap
 import nibabel as nib
 # The geometry of the interface is written in project_ui script
 from project_ui import Ui_Dialog
-
-
+from matplotlib.patches import Rectangle
+from matplotlib.widgets import RectangleSelector
 # A Maindow class with Parent QDialog class is created.
 
 class MainWindow(QDialog):
@@ -43,11 +43,17 @@ class MainWindow(QDialog):
 
 
 
-
+        #self.ui.topwidget.canvas.mpl_connect('key_press_event', self.shift_key)
         self.ui.topwidget.canvas.mpl_connect("button_press_event",self.top_press)
+        #self.ui.topwidget.canvas.mpl_connect("button_release_event",self.on_press)
 
 
-
+        self.rs = RectangleSelector(self.ui.topwidget.canvas.ax, self.line_select_callback,
+                                                drawtype='box', useblit=False,
+                                                button=[1, 3],  # don't use middle button
+                                                minspanx=2, minspany=2,
+                                                rectprops=dict(facecolor="green", alpha=0.2, fill=False),
+                                                interactive=True)
 
 
         #self.ui.topwidget.mpl_connect("button_press_event", self.on_press)
@@ -140,12 +146,29 @@ class MainWindow(QDialog):
         self.ui.bottom_value.setText(str(self.ui.bottom_slider.value()))
 
     def top_press(self, event):
+        print("top_press")
         x_index = int(event.xdata)
         y_index = int(event.ydata)
-
+        self.x0 = event.xdata
+        self.y0 = event.ydata
         self.side_plot(index_val = y_index)
         self.bottom_plot(index_val = x_index)
-        
+        if event.button == 1 or event.button == 3 and not self.rs.active:
+            self.rs.set_active(True)
+        else:
+            self.rs.set_active(False)
+        return
+
+
+
+    def line_select_callback(self, eclick, erelease):
+        x1, y1 = eclick.xdata, eclick.ydata
+        x2, y2 = erelease.xdata, erelease.ydata
+        print("(%3.2f, %3.2f) --> (%3.2f, %3.2f)" % (x1, y1, x2, y2))
+        print(" The button you used were: %s %s" % (eclick.button, erelease.button))
+        self.rs.set_active(False)
+        return
+
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
