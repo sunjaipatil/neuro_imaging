@@ -55,10 +55,39 @@ class MainWindow(QDialog):
                                                 rectprops=dict(facecolor="green", alpha=0.2, fill=False),
                                                 interactive=True)
 
-
+        self.rs.set_active(False)
         #self.ui.topwidget.mpl_connect("button_press_event", self.on_press)
         #self.ui.top_slider.valueChanged.connect(self.topplot_value)
         #self.ui.plotbutton.clicked.connect(self.plotdata)
+
+
+    def top_press(self, event):
+        if not self.ui.checkbox.isChecked():
+            print("here")
+            x_index = int(event.xdata)
+            y_index = int(event.ydata)
+            self.x0 = event.xdata
+            self.y0 = event.ydata
+            self.side_plot(index_val = y_index)
+            self.bottom_plot(index_val = x_index)
+        if self.ui.checkbox.isChecked():
+            print("here in ")
+            if event.button == 1 or event.button == 3 and not self.rs.active:
+                self.rs.set_active(True)
+            else:
+                self.rs.set_active(False)
+        return
+
+
+
+    def line_select_callback(self, eclick, erelease):
+        x1, y1 = eclick.xdata, eclick.ydata
+        x2, y2 = erelease.xdata, erelease.ydata
+        print("(%3.2f, %3.2f) --> (%3.2f, %3.2f)" % (x1, y1, x2, y2))
+        print(" The button you used were: %s %s" % (eclick.button, erelease.button))
+        self.rs.set_active(False)
+        return
+
 
     def browse_files(self):
         """
@@ -145,29 +174,7 @@ class MainWindow(QDialog):
     def bottom_value(self):
         self.ui.bottom_value.setText(str(self.ui.bottom_slider.value()))
 
-    def top_press(self, event):
-        print("top_press")
-        x_index = int(event.xdata)
-        y_index = int(event.ydata)
-        self.x0 = event.xdata
-        self.y0 = event.ydata
-        self.side_plot(index_val = y_index)
-        self.bottom_plot(index_val = x_index)
-        if event.button == 1 or event.button == 3 and not self.rs.active:
-            self.rs.set_active(True)
-        else:
-            self.rs.set_active(False)
-        return
 
-
-
-    def line_select_callback(self, eclick, erelease):
-        x1, y1 = eclick.xdata, eclick.ydata
-        x2, y2 = erelease.xdata, erelease.ydata
-        print("(%3.2f, %3.2f) --> (%3.2f, %3.2f)" % (x1, y1, x2, y2))
-        print(" The button you used were: %s %s" % (eclick.button, erelease.button))
-        self.rs.set_active(False)
-        return
 
 
 if __name__ == '__main__':

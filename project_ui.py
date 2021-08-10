@@ -47,7 +47,9 @@ class Ui_Dialog(object):
         self.side_slider.setValue(0)
         self.bottom_slider.setValue(0)
 
-
+        self.checkbox = QtWidgets.QCheckBox(Dialog)
+        self.checkbox.setGeometry(QtCore.QRect(100, 40, 30, 22))
+        self.checkbox.setChecked(False)
         # slider pagesteps
         self.top_slider.setPageStep(1)
         self.side_slider.setPageStep(1)
