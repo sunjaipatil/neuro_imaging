@@ -98,7 +98,8 @@ class MainWindow(QDialog):
         self.nifti_file = fname[0]
         self.ui.selected_file.setText(self.nifti_file)
 
-
+        if not self.nifti_file:
+            return
         # Read data here
         self.data = nib.load(self.nifti_file)
         self.data.get_data_dtype() == np.dtype(np.int16)
