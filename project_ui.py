@@ -28,7 +28,7 @@ class Ui_Dialog(object):
         self.selected_file.setObjectName("selected_file")
         self.browse = QtWidgets.QPushButton(Dialog)
         self.browse.setGeometry(QtCore.QRect(420, 5, 111, 31))
-        self.browse.setObjectName("browse")
+        #self.browse.setObjectName("browse")
         self.top_slider = QtWidgets.QSlider(Dialog)
         self.top_slider.setGeometry(QtCore.QRect(160, 40, 300, 22))
         self.top_slider.setOrientation(QtCore.Qt.Horizontal)
@@ -64,7 +64,7 @@ class Ui_Dialog(object):
         self.top_value = QtWidgets.QLineEdit(Dialog)
         self.top_value.setGeometry(QtCore.QRect(520, 40, 40, 40))
 
-
+        self.browse.setText("Browse")
         self.side_value = QtWidgets.QLineEdit(Dialog)
         self.side_value.setGeometry(QtCore.QRect(980, 40, 40, 40))
 
@@ -72,13 +72,20 @@ class Ui_Dialog(object):
         self.bottom_value.setGeometry(QtCore.QRect(520, 630, 40, 40))
 
 
-        self.retranslateUi(Dialog)
-        QtCore.QMetaObject.connectSlotsByName(Dialog)
 
-    def retranslateUi(self, Dialog):
-        _translate = QtCore.QCoreApplication.translate
-        Dialog.setWindowTitle(_translate("Dialog", "Dialog"))
-        self.browse.setText(_translate("Dialog", "Browse"))
+        #Push button
+        self.add_button = QtWidgets.QPushButton(Dialog)
+        self.add_button.setGeometry(QtCore.QRect(70, 80, 70, 40))
+        self.add_button.setText("Add")
+
+
+        #Save button_press_event
+        self.save_button = QtWidgets.QPushButton(Dialog)
+        self.save_button.setGeometry(QtCore.QRect(70, 150, 70, 40))
+        self.save_button.setText("Save")
+        #self.retranslateUi(Dialog)
+        #QtCore.QMetaObject.connectSlotsByName(Dialog)
+
 
 # The matplotlib is not a standard PyQt5 widget, so a new MplWidget class has been created under the PyQt5 widget class
 from mplwidget import MplWidget
