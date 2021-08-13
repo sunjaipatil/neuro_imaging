@@ -75,8 +75,13 @@ class Ui_Dialog(object):
 
         #Push button
         self.add_button = QtWidgets.QPushButton(Dialog)
+<<<<<<< HEAD
         self.add_button.setGeometry(QtCore.QRect(70, 80, 70, 40))
         self.add_button.setText("Add")
+=======
+        self.add_button.setGeometry(QtCore.QRect(70, 80, 75, 40))
+        self.add_button.setText("Capture")
+>>>>>>> 127c82b... Update capture button
 
 
         #Save button_press_event

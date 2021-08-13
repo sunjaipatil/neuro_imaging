@@ -11,7 +11,7 @@ Created on Wed Jul 21 13:26:42 2021
 import sys, numpy as np
 from PyQt5.QtWidgets import QDialog, QApplication, QFileDialog
 from PyQt5.QtGui import QPixmap
-import nibabel as nib
+import nibabel as nib, pickle,gzip
 # The geometry of the interface is written in project_ui script
 from project_ui import Ui_Dialog
 from matplotlib.patches import Rectangle
@@ -61,6 +61,8 @@ class MainWindow(QDialog):
 
         self.x1, self.x2, self.y1, self.y2 = None, None, None, None
         self.ui.add_button.clicked.connect(self.add_patch)
+
+        self.ui.save_button.clicked.connect(self.save_file)
         #self.ui.topwidget.mpl_connect("button_press_event", self.on_press)
         #self.ui.top_slider.valueChanged.connect(self.topplot_value)
         #self.ui.plotbutton.clicked.connect(self.plotdata)
@@ -99,7 +101,7 @@ class MainWindow(QDialog):
         This function is called to browse files and read nifti image data
         """
 
-        fname = QFileDialog.getOpenFileName(self, 'Open file', 'D:',"*.gz" )
+        fname = QFileDialog.getOpenFileName(self, 'Open file', 'D:',"*nii.gz" )
         self.nifti_file = fname[0]
         self.ui.selected_file.setText(self.nifti_file)
 
@@ -171,16 +173,25 @@ class MainWindow(QDialog):
             return
 
     def add_patch(self):
-        print("in add patch")
+
         if not self.x1 or not self.x2 or not self.y1 or not self.y2:
             return
         i = self.ui.top_slider.value()
         j1, j2 = int(self.y1), int(self.y2)
         k1, k2 = int(self.x1), int(self.x2)
-        
+
         self.output_data[i][j1:j2, k1:k2] = np.ones((abs(j2-j1), abs(k2-k1)))
-        print("Output data")
+        
         return
+
+    def save_file(self):
+
+
+        if not self.nifti_file:
+            return
+
+        output_file = self.nifti_file[:-7]+'_output.pkl.gz'
+        pickle.dump(self.output_data, gzip.open(output_file,'w'))
 
     def top_value(self):
         self.ui.top_value.setText(str(self.ui.top_slider.value()))
