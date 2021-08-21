@@ -95,7 +95,7 @@ class Ui_Dialog(object):
 
         # Message Label
         self.message_label = QtWidgets.QLabel(Dialog)
-        self.message_label.setGeometry(QtCore.QRect(520, 500, 180, 22))
+        self.message_label.setGeometry(QtCore.QRect(520, 500, 250, 22))
         self.message_label.setStyleSheet("color:red")
 # The matplotlib is not a standard PyQt5 widget, so a new MplWidget class has been created under the PyQt5 widget class
 from mplwidget import MplWidget

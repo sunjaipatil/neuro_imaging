@@ -29,6 +29,8 @@ class MainWindow(QDialog):
         # some initialisations
         self.nifti_file = None
         self.data = None
+        self.mask_file = None
+        self.mask_data = None
         self.ui.browse.clicked.connect(self.browse_files)
 
 
@@ -119,8 +121,14 @@ class MainWindow(QDialog):
         if self.ui.overlay_checkbox:
             output_file = self.nifti_file[:-7]+'_output.pkl.gz'
             if not os.path.exists(output_file):
-                self.ui.message_label.setText("Sorry there in no output file")
-            
+
+                self.ui.message_label.setText("Sorry there in no output file to overlap")
+            else:
+                self.mask_file = output_file
+                self.mask_data = pickle.load(gzip.open(self.mask_file, 'r'))
+
+        return
+
     def top_plot(self):
         """
         Plotting function
@@ -131,11 +139,20 @@ class MainWindow(QDialog):
         if not self.nifti_file:#:== None:
             return
         # plots as well as writes down the value on a label
+
+        # if the mask file need to overlaid on top of the data value
+
         slider_value = self.ui.top_slider.value()
         plot_data = self.data[slider_value]
+        if self.mask_file and self.ui.overlay_checkbox:
+            # take the cross section corresponding to slider value
+            mask_data = self.mask_data[slider_value]
+            inds = np.where(mask_data==1)
+            plot_data[inds] = 1.
+
         self.ui.topwidget.canvas.ax.imshow(plot_data)
         self.ui.topwidget.canvas.draw()
-
+        return
 
     def side_plot(self, index_val = None):
         """
@@ -146,18 +163,24 @@ class MainWindow(QDialog):
         if not index_val:
             slider_value = self.ui.side_slider.value()
             plot_data = self.data[:,:,slider_value]
-            self.ui.sidewidget.canvas.ax.imshow(plot_data)
-            self.ui.sidewidget.canvas.draw()
-            return
         else:
             self.ui.side_slider.setValue(index_val)
             slider_value = self.ui.side_slider.value()
-
             plot_data = self.data[:,:,slider_value]
-            self.ui.sidewidget.canvas.ax.imshow(plot_data)
-            self.ui.sidewidget.canvas.draw()
             self.side_value()
-            return
+        if self.mask_file and self.ui.overlay_checkbox:
+            # take the cross section corresponding to slider value
+            mask_data = self.mask_data[:,:,slider_value]
+            inds = np.where(mask_data==1)
+            plot_data[inds] = 1.
+
+
+        self.ui.sidewidget.canvas.ax.imshow(plot_data)
+        self.ui.sidewidget.canvas.draw()
+
+        return
+
+
     def bottom_plot(self, index_val = None):
 
         if not self.nifti_file:
@@ -166,17 +189,22 @@ class MainWindow(QDialog):
         if not index_val:
             slider_value = self.ui.bottom_slider.value()
             plot_data = self.data[:,slider_value,:]
-            self.ui.frontwidget.canvas.ax.imshow(plot_data)
-            self.ui.frontwidget.canvas.draw()
+
         else:
             self.ui.bottom_slider.setValue(index_val)
             slider_value = self.ui.bottom_slider.value()
-
             plot_data = self.data[:,slider_value,:]
-            self.ui.frontwidget.canvas.ax.imshow(plot_data)
-            self.ui.frontwidget.canvas.draw()
             self.side_value()
-            return
+
+        if self.mask_file and self.ui.overlay_checkbox:
+            # take the cross section corresponding to slider value
+
+            mask_data = self.mask_data[:,slider_value,:]
+            inds = np.where(mask_data==1)
+            plot_data[inds] = 1.
+        self.ui.frontwidget.canvas.ax.imshow(plot_data)
+        self.ui.frontwidget.canvas.draw()
+        return
 
     def add_patch(self):
 
