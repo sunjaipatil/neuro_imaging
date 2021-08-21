@@ -9,6 +9,7 @@ Created on Wed Jul 21 13:26:42 2021
 
 # imports
 import sys, numpy as np
+import os
 from PyQt5.QtWidgets import QDialog, QApplication, QFileDialog
 from PyQt5.QtGui import QPixmap
 import nibabel as nib, pickle,gzip
@@ -115,6 +116,11 @@ class MainWindow(QDialog):
         self.ui.side_slider.setRange(0, self.data.shape[1]-1)
         self.ui.bottom_slider.setRange(0, self.data.shape[2]-1)
         self.output_data = np.zeros(self.data.shape)
+        if self.ui.overlay_checkbox:
+            output_file = self.nifti_file[:-7]+'_output.pkl.gz'
+            if not os.path.exists(output_file):
+                self.ui.message_label.setText("Sorry there in no output file")
+            
     def top_plot(self):
         """
         Plotting function
@@ -181,7 +187,7 @@ class MainWindow(QDialog):
         k1, k2 = int(self.x1), int(self.x2)
 
         self.output_data[i][j1:j2, k1:k2] = np.ones((abs(j2-j1), abs(k2-k1)))
-        
+
         return
 
     def save_file(self):

@@ -75,23 +75,28 @@ class Ui_Dialog(object):
 
         #Push button
         self.add_button = QtWidgets.QPushButton(Dialog)
-<<<<<<< HEAD
-        self.add_button.setGeometry(QtCore.QRect(70, 80, 70, 40))
-        self.add_button.setText("Add")
-=======
         self.add_button.setGeometry(QtCore.QRect(70, 80, 75, 40))
         self.add_button.setText("Capture")
->>>>>>> 127c82b... Update capture button
 
 
         #Save button_press_event
         self.save_button = QtWidgets.QPushButton(Dialog)
         self.save_button.setGeometry(QtCore.QRect(70, 150, 70, 40))
         self.save_button.setText("Save")
-        #self.retranslateUi(Dialog)
-        #QtCore.QMetaObject.connectSlotsByName(Dialog)
+
+        # Overlay select button
+        self.overlaylabel = QtWidgets.QLabel(Dialog)
+        self.overlaylabel.setGeometry(QtCore.QRect(720, 10, 85, 22))
+        self.overlaylabel.setText("Overlay Label")
+        self.overlay_checkbox = QtWidgets.QCheckBox(Dialog)
+        self.overlay_checkbox.setGeometry(QtCore.QRect(900, 10, 30, 22))
+        self.overlay_checkbox.setChecked(False)
 
 
+        # Message Label
+        self.message_label = QtWidgets.QLabel(Dialog)
+        self.message_label.setGeometry(QtCore.QRect(520, 500, 180, 22))
+        self.message_label.setStyleSheet("color:red")
 # The matplotlib is not a standard PyQt5 widget, so a new MplWidget class has been created under the PyQt5 widget class
 from mplwidget import MplWidget
 
